@@ -112,23 +112,26 @@ Cả 3 phương án được xây dựng trên cùng **70% thành phần dùng c
 
 ---
 
-## 4. ĐÓNG GÓP CỦA TÔI TRONG NHÓM (TRẦN PHẠM THÁI VŨ)
+## 4. ĐÓNG GÓP CỦA TÔI TRONG NHÓM (HOÀNG ANH TÀI)
 
-Học viên **Trần Phạm Thái Vũ** chủ động trực tiếp định hướng thiết kế, lập trình và điều phối kiểm thử dự án với sự hỗ trợ của trợ lý AI (Gemini 3.8 Flash), đạt được các kết quả cụ thể trong repository bao gồm:
-1. **Định hướng và hoàn thiện bộ Web Micro-Prototypes (`prototype/`):**
-   - Thiết lập giao diện responsive bằng Native HTML5/CSS3/JS, hỗ trợ bàn phím, tương phản tốt, không tràn trang mobile.
-   - Hiện thực hóa 3 cơ chế tương tác khác biệt cho Option A, Option B, Option C với cơ chế cô lập trạng thái (State Isolation) để thao tác ở option này không làm rò rỉ dữ liệu sang option khác.
-   - Xây dựng engine kiểm tra khớp mẫu giáo cụ chuẩn mực (Exact Supported Teaching Fixture Match, không phải full JS validator): bóc tách comment độc lập `//`, chuẩn hóa khoảng trắng, dùng regex neo chặt so khớp cấu trúc bài tập Cloud Run; giới hạn câu lệnh console.log trong khối listen; từ chối dứt khoát mã xâu chuỗi dị dạng, mã có hậu tố bất thường (`???`), `console.log(???)`, unclosed comment hoặc chú thích khối `/* ... */`, thừa dấu ngoặc `});`, comment/string spoofing hoặc mã không thuộc cấu trúc giáo trình mẫu mà không cần chạy `eval`.
-   - Xây dựng cơ chế kiểm tra snippet hợp lệ (`isValidPortSnippet`, `isValidListenSnippet`), guard chặn thao tác khi dừng hướng dẫn (`if (state.optB.stopped) return;`), phản hồi chẩn đoán ngữ cảnh và panel Dockerfile thay thế trong Option B.
-   - Thiết kế Bảng trượt quan sát (Observer Drawer) tích hợp Outcome Task trung tính, Neutral Rescue Prompts và ô ghi chép tức thời cho Facilitator, có cơ chế lưu trữ an toàn khi `sessionStorage` bị chặn.
-2. **Xây dựng bộ kiểm thử hồi quy tương tác không dependency (`prototype/check.cjs`):**
-   - Lập trình test suite chạy trên Node.js built-in (`assert`, `vm`), kích hoạt trực tiếp các event handler thông qua DOM stub tối giản, kiểm tra 6 nhóm điều kiện: Cú pháp, Hợp đồng Cloud Run, Tìm kiếm ngữ cảnh, Tính bất biến của Skip/Stop trong Option B, Cơ chế phục hồi Rollback trong Option C, và Bộ lọc an toàn HTML chống XSS.
-3. **Định hình thiết kế Option B và Bảng Quyết Định Human–AI 4x4:**
-   - Biên soạn lộ trình Socratic 3 bước vi mô có phản hồi ngữ cảnh theo câu hỏi chẩn đoán và xây dựng bảng quyết định Human–AI qua 4 góc độ: *Expectation, Role & Agency, Evidence & Uncertainty, Control & Recovery* tại [three-option-design-sheet.md](three-option-design-sheet.md).
-4. **Biên soạn Kịch bản Demo & Giao thức kiểm thử chuẩn mực (`demo-interview-guide.md`, `prototype-feedback-note.md`):**
-   - Thiết lập kịch bản thuyết trình demo 7–10 phút kèm lời thoại đọc to, thao tác UI từng bước, kịch bản phục hồi lỗi AI; xây dựng quy trình kiểm thử người dùng 15–20 phút với sàng lọc $\le 2'$, lệnh tác vụ trung tính (tìm nguyên nhân lỗi, giải thích cách sửa lựa chọn và xác thực lại kết quả) và khung ghi chép 4 tầng (*Observed, Interpreted, Decided, Still Unproven*) sẵn sàng cho phiên kiểm thử cá nhân theo thứ tự đối trọng **B $\to$ C $\to$ A**.
+Học viên **Hoàng Anh Tài** (MHV: `2A202602612`) chủ động tham gia định hướng thiết kế, rà soát dữ liệu sơ cấp, phát triển prototype và trực tiếp điều phối kiểm thử phiên thực địa thứ 3 của dự án với sự hỗ trợ của trợ lý AI (Gemini 3.8 Flash), đạt được các kết quả cụ thể trong repository bao gồm:
+1. **Rà soát dữ liệu sơ cấp và đóng góp Bằng chứng thực nghiệm (Day 17):**
+   - Đóng góp bộ dữ liệu phỏng vấn người học `Tai-P-01`, xác nhận rõ 2 bản ghi chép của mình (bản tóm tắt RAG và transcript GenAI gốc), lấy transcript GenAI làm bằng chứng nền tảng cho giả thuyết vấn đề của nhóm.
+   - Thống nhất cơ sở dữ liệu thực nghiệm và xây dựng định nghĩa vấn đề 5 thành tố chuẩn mực (Gate 1).
+2. **Đồng thiết kế kiến trúc phân quyền 3 Options và Hợp đồng so sánh (Chặng 2 & Chặng 3):**
+   - Đề xuất phân bổ 3 phương án trên phổ tự trị Người – AI: Option A (User-Led ~85%), Option B (Socratic Co-Creation ~50/50), Option C (Proactive Auto-Fix ~80%).
+   - Xây dựng Bản Hợp đồng So sánh (Comparison Contract) tuân thủ nghiêm ngặt quy tắc 70% Invariants (cùng người dùng, bối cảnh, nhiệm vụ, kết quả mong đợi, dữ liệu mẫu) và 30% Variables (cơ chế, phân vai, điểm kích hoạt, đánh đổi cốt lõi).
+   - Thiết lập bảng quyết định tương tác Human–AI 4 góc độ (*Expectation, Role & Agency, Evidence & Uncertainty, Control & Recovery*) với các cơ chế phòng vệ (Rollback, Reject, Skip, Stop).
+3. **Phát triển và hoàn thiện bộ Web Micro-Prototypes (`prototype/`):**
+   - Đồng hoàn thiện giao diện responsive bằng Native HTML5/CSS3/JS, không phụ thuộc thư viện ngoài, tối ưu khả năng chạy ngoại tuyến (`file://`).
+   - Kiểm tra cơ chế cô lập trạng thái (State Isolation) giữa các tab A, B, C và tích hợp Bảng trượt quan sát (Observer Drawer) phục vụ điều phối kiểm thử.
+   - Chạy kiểm thử hồi quy độc lập không dependency với `node prototype/check.cjs` (vượt qua 6/6 test suites).
+4. **Biên soạn Giao thức kiểm thử cá nhân & Trực tiếp điều phối Tester 3 (`prototype-feedback-note.md`):**
+   - Biên soạn chi tiết toàn văn biên bản kiểm thử thực địa của Tester 3 (Học viên ẩn danh MSV: `2A202602416` tại VinUniversity) theo thứ tự đối trọng **C $\to$ A $\to$ B**.
+   - Ghi nhận đầy đủ dữ kiện quan sát 4 tầng (*Observed, Interpreted, Decided, Still Unproven*), phát hiện hành vi người dùng đối với các điểm phục hồi an toàn (Rollback/Reject khi AI sai) và cảm giác an tâm nhận thức ở Option B.
 5. **Đảm bảo tính trung thực học thuật:**
-   - Tiếp nhận và đối chiếu đầy đủ 3 văn bản sơ cấp Day 17 (`Vu-P01`, `An-HV-A01`, `Tai-P-01`); làm rõ sự không đồng nhất về phạm vi (heterogeneous scope), phân định rành mạch giữa dữ kiện thật, suy diễn của nghiên cứu viên và nguyện vọng người học; thống nhất các điểm nguồn dữ liệu theo chỉ đạo người dùng (xác định 2 bản tổng hợp của Tài, sử dụng transcript GenAI làm gốc, bỏ qua vướng mắc siêu dữ liệu); phiên kiểm thử người dùng Day 18/19 tiếp tục duy trì trạng thái sẵn sàng thực địa `[CHƯA THỰC HIỆN]`, tuyệt đối không bịa đặt dữ liệu hay phát biểu của người dùng.
+   - Phân định rạch ròi giữa dữ kiện quan sát khách quan (Raw Facts), suy đoán của nghiên cứu viên (Interpretation) và mong muốn của người dùng (Participant Wishes).
+   - Tuân thủ đầy đủ quy định minh bạch hỗ trợ AI trong `ai-support-log.md` (Step 10 compliance).
 
 ---
 
