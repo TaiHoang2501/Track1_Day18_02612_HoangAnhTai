@@ -2,8 +2,8 @@
 ## Thiết Kế Thử Nghiệm: Đa Phương Án Tương Tác Người–AI (Multiple Prototypes & Human–AI Design)
 
 > **Khoá học:** Codelab VLearn — K4 Track 1 (Human-Centered AI Design)  
-> **Repository:** `Track1_Day19_2A202602612_HoangAnhTai`  
-> **Căn cứ yêu cầu:** [VLearn Codelab Reader D18-D19](https://vlearn.dev/course/k04-l34-p2-t1/reader?day=D05&part=codelab-f3fc688af6874124b3d45f0d65a5a14e-s11-doc) và `instruction.md`.
+> **Repository:** [`Track1_Day18_02612_HoangAnhTai`](https://github.com/TaiHoang2501/Track1_Day18_02612_HoangAnhTai)  
+> **Căn cứ yêu cầu:** [VLearn Codelab Reader D18-D19](https://vlearn.dev/course/k04-l34-p2-t1/reader?day=D05&part=codelab-f3fc688af6874124b3d45f0d65a5a14e-s11-doc).
 
 ---
 
