@@ -13,18 +13,16 @@ Toàn bộ mã nguồn ứng dụng được xây dựng hoàn toàn bằng Nati
   👉 [**Mở Prototype Trực Tiếp: `prototype/index.html`**](prototype/index.html)
 * **Đường dẫn tệp trong repo:**  
   `prototype/index.html`
-* **Đường dẫn tuyệt đối trên máy tính cục bộ:**  
-  `file:///D:/Lab/Track1-Day19-2A202602695-TranPhamThaiVu/prototype/index.html`
 * **Hướng dẫn mở trên trình duyệt:**  
   1. **Cách 1 (Nhanh nhất):** Nhấp đúp chuột trực tiếp vào tệp [`prototype/index.html`](prototype/index.html) trong thư mục dự án.  
-  2. **Cách 2:** Mở trình duyệt web bất kỳ (Google Chrome, Microsoft Edge, Mozilla Firefox, Safari), nhấn `Ctrl + O` (hoặc kéo thả tệp `index.html` vào tab trình duyệt).  
-  3. **Cách 3:** Dán đường dẫn `file:///D:/Lab/Track1-Day19-2A202602695-TranPhamThaiVu/prototype/index.html` vào thanh địa chỉ của trình duyệt.
+  2. **Cách 2:** Mở trình duyệt web bất kỳ (Google Chrome, Microsoft Edge, Mozilla Firefox, Safari), nhấn `Ctrl + O` hoặc `Cmd + O` (hoặc kéo thả tệp `index.html` vào tab trình duyệt).  
+  3. **Cách 3:** Dán đường dẫn tệp vào thanh địa chỉ của trình duyệt.
 
 *(Lưu ý: Toàn bộ thư mục `prototype/` đã được commit và theo dõi trực tiếp trong git repository bao gồm `index.html`, `style.css`, `app.js` và test suite `check.cjs`, đảm bảo người chấm/người dùng clone repo về có thể mở và kiểm thử offline ngay lập tức).*
 
 ### 1.2. Kiểm Tra Cú Pháp & Kiểm Thử Hồi Quy Cục Bộ (Node.js)
 Bạn có thể chạy kiểm tra cú pháp và bộ kiểm thử hồi quy tương tác (regression test) đã tích hợp sẵn trong repo thông qua Node.js (sử dụng module built-in `assert` và `vm`, không cần cài thêm package):
-```powershell
+```bash
 # Kiểm tra cú pháp JavaScript
 node --check prototype/app.js
 
@@ -37,7 +35,7 @@ node prototype/check.cjs
 
 ## 2. HƯỚNG DẪN DÀNH CHO NGƯỜI QUAN SÁT (FACILITATOR)
 
-Khi đóng vai trò người điều phối phiên thử nghiệm (Facilitator - Trần Phạm Thái Vũ):
+Khi đóng vai trò người điều phối phiên thử nghiệm (Facilitator - Hoàng Anh Tài):
 
 1. **Mở Bảng Quan Sát (Observer Drawer):**  
    - Bấm vào nút **“📋 Bảng Quan Sát Tester”** ở góc trên bên phải màn hình.

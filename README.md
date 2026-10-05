@@ -2,20 +2,20 @@
 ## Thiết Kế Thử Nghiệm: Đa Phương Án Tương Tác Người–AI (Multiple Prototypes & Human–AI Design)
 
 > **Khoá học:** Codelab VLearn — K4 Track 1 (Human-Centered AI Design)  
-> **Repository:** `Track1-Day19-2A202602695-TranPhamThaiVu`  
+> **Repository:** `Track1_Day19_2A202602612_HoangAnhTai`  
 > **Căn cứ yêu cầu:** [VLearn Codelab Reader D18-D19](https://vlearn.dev/course/k04-l34-p2-t1/reader?day=D05&part=codelab-f3fc688af6874124b3d45f0d65a5a14e-s11-doc) và `instruction.md`.
 
 ---
 
 ## 1. THÔNG TIN CÁ NHÂN VÀ NHÓM
 
-* **Học viên thực hiện (Chủ repository):** **Trần Phạm Thái Vũ**
-* **Mã học viên (MHV):** `2A202602695`
+* **Học viên thực hiện (Chủ repository):** **Hoàng Anh Tài**
+* **Mã học viên (MHV):** `2A202602612`
 * **Tên nhóm:** **Tomorrow**
 * **Danh sách thành viên nhóm Tomorrow:**
-  1. **Đinh Trường An** — MHV: `2A202602393`
-  2. **Trần Phạm Thái Vũ** — MHV: `2A202602695` *(Chủ repo)*
-  3. **Hoàng Anh Tài** — MHV: `2A202602612`
+  1. **Hoàng Anh Tài** — MHV: `2A202602612` *(Chủ repo)*
+  2. **Trần Phạm Thái Vũ** — MHV: `2A202602695`
+  3. **Đinh Trường An** — MHV: `2A202602393`
 * **Case study lựa chọn:** **Case A — AI Tutor: Diagnostic Refresher**
 
 ---
@@ -78,8 +78,8 @@ Cả 3 phương án được xây dựng trên cùng **70% thành phần dùng c
 
 ### 3.2. Mở Prototype Ngoại Tuyến (Offline-First via `file://`)
 * Toàn bộ mã nguồn Web nằm tại thư mục `prototype/`, không phụ thuộc internet, không dùng CDN.
-* Mở trực tiếp bằng trình duyệt qua đường dẫn:  
-  [`file:///D:/Lab/Track1-Day19-2A202602695-TranPhamThaiVu/prototype/index.html`](prototype/index.html)
+* Mở trực tiếp bằng trình duyệt qua liên kết tương đối:  
+  [`prototype/index.html`](prototype/index.html)
 * Hướng dẫn chi tiết: [prototype-link.md](prototype-link.md).
 
 ### 3.3. Danh Mục Deliverables của Dự Án
@@ -137,8 +137,8 @@ Học viên **Trần Phạm Thái Vũ** chủ động trực tiếp định hư�
 ### 5.1. Kết Quả Kiểm Thử Thực Địa Đối Trọng (Counterbalanced Field Testing)
 Bộ prototype tương tác đã hoàn thiện và được đưa vào thử nghiệm trên 3 người dùng ngoài nhóm theo giao thức đối trọng hình vuông Latinh (Latin Square Counterbalancing) nhằm triệt tiêu thiên kiến thứ tự:
 * **Tester 1 (Đinh Trường An điều phối):** **Lê Bảo Long** (K4 Data Science) — Trải nghiệm theo thứ tự **A $\to$ B $\to$ C**.
-* **Tester 2 (Trần Phạm Thái Vũ điều phối):** **Ninh Quang Minh** (K4 Software Engineering — MHV: `2A202602432`) — Trải nghiệm theo thứ tự **B $\to$ C $\to$ A** *(Chi tiết toàn văn biên bản tại [prototype-feedback-note.md](prototype-feedback-note.md))*.
-* **Tester 3 (Hoàng Anh Tài điều phối):** **Học viên ẩn danh** (MSV: `2A202602416` — K4 AI Software Engineering) — Trải nghiệm theo thứ tự **C $\to$ A $\to$ B**.
+* **Tester 2 (Trần Phạm Thái Vũ điều phối):** **Ninh Quang Minh** (K4 Software Engineering — MHV: `2A202602432`) — Trải nghiệm theo thứ tự **B $\to$ C $\to$ A**.
+* **Tester 3 (Hoàng Anh Tài điều phối):** **Học viên ẩn danh** (MSV: `2A202602416` — K4 AI Software Engineering) — Trải nghiệm theo thứ tự **C $\to$ A $\to$ B** *(Chi tiết toàn văn biên bản cá nhân của chủ repo tại [prototype-feedback-note.md](prototype-feedback-note.md))*.
 
 ### 5.2. Các Phát Hiện Hành Vi Cốt Lõi (Key Behavioral Insights)
 1. **Option B đạt điểm số tuyệt đối về Cảm Giác An Tâm Nhận Thức (Psychological Safety):** Cả 3/3 tester đều xếp Option B ở vị trí an tâm nhất vì AI không tự ý sửa đè lên codebase mà chia nhỏ vấn đề thành các micro-steps có đối chiếu tài liệu chính thức Cloud Run.
@@ -162,7 +162,7 @@ $$\text{Next Change} = \text{Option C (Proactive Trigger \& Diff)} + \text{Optio
 ## 6. MINH BẠCH SỬ DỤNG AI (AI SUPPORT LOG SUMMARY)
 
 Tuân thủ nghiêm ngặt quy định Bước 10 của VLearn Codelab:
-* **Phân vai thực tế:** Học viên **Trần Phạm Thái Vũ** chủ động trực tiếp định hướng thiết kế, phản biện kiến trúc, kiểm thử mã nguồn và điều phối phỏng vấn người dùng; Trợ lý AI (Google Gemini 3.8 Flash) đóng vai trò hỗ trợ lập trình (AI Pair Programmer), sinh mã boilerplate và kiểm tra cú pháp.
+* **Phân vai thực tế:** Học viên **Hoàng Anh Tài** chủ động trực tiếp định hướng thiết kế, phản biện kiến trúc, kiểm thử mã nguồn và điều phối phỏng vấn người dùng; Trợ lý AI (Google Gemini 3.8 Flash) đóng vai trò hỗ trợ lập trình (AI Pair Programmer), sinh mã boilerplate và kiểm tra cú pháp.
 * **Tác vụ AI hỗ trợ hiệu quả:** Sinh khung mã nguồn Web Prototype (HTML/CSS/Vanilla JS) chạy 100% ngoại tuyến; cấu trúc hóa bảng Human-AI Decision Table 4x4; lập trình bộ kiểm thử hồi quy Node.js (`prototype/check.cjs`); tạo data fixture lỗi Cloud Run chuẩn kỹ thuật; rà soát loại bỏ câu hỏi thiên kiến theo The Mom Test.
 * **Các lỗi thực tế của AI đã được học viên trực tiếp phát hiện và khắc phục:**
   - Sửa lỗi regex thay thế Option B bị sót dấu `});` và nuốt code $\to$ Học viên yêu cầu viết lại hàm `buildOptionBCode` tái tạo mã nguồn xác định (deterministic).

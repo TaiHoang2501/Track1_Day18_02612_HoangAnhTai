@@ -2,8 +2,8 @@
 
 - **Khóa học:** Codelab VLearn — K4 Track 1 (Human-Centered AI Design)
 - **Bài lab:** Day 18 & 19 — Multiple Prototypes & Human–AI Design
-- **Chủ repository:** Trần Phạm Thái Vũ (MHV: `2A202602695`)
-- **Nhóm:** Tomorrow (Đinh Trường An, Trần Phạm Thái Vũ, Hoàng Anh Tài)
+- **Chủ repository:** Hoàng Anh Tài (MHV: `2A202602612`)
+- **Nhóm:** Tomorrow (Hoàng Anh Tài, Trần Phạm Thái Vũ, Đinh Trường An)
 - **Case study:** Case A — AI Tutor: Diagnostic Refresher
 - **Tình trạng tài liệu:** Bản thiết kế hoàn chỉnh phục vụ kiểm thử prototype. Dữ liệu thực nghiệm kế thừa từ Day 17; các phần thiếu dữ liệu được ghi nhận trung thực.
 

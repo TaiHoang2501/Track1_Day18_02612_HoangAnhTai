@@ -2,8 +2,8 @@
 
 > **Khoá học:** Codelab VLearn — K4 Track 1 (Human-Centered AI Design)  
 > **Bài lab:** Day 18 & 19 — Multiple Prototypes & Human–AI Design  
-> **Học viên thực hiện:** **Trần Phạm Thái Vũ** (MHV: `2A202602695`)  
-> **Nhóm:** **Tomorrow** (Đinh Trường An, Trần Phạm Thái Vũ, Hoàng Anh Tài)  
+> **Học viên thực hiện:** **Hoàng Anh Tài** (MHV: `2A202602612`)  
+> **Nhóm:** **Tomorrow** (Hoàng Anh Tài, Trần Phạm Thái Vũ, Đinh Trường An)  
 >  
 > *Cam kết liêm chính học thuật:* Tài liệu này ghi chép trung thực 100% phạm vi, mức độ và quá trình tương tác giữa học viên với các công cụ Trí tuệ Nhân tạo (AI) trong suốt quá trình triển khai bài lab. Học viên khẳng định: AI chỉ đóng vai trò trợ lý kỹ thuật (AI Pair Programmer & Drafting Assistant); toàn bộ các quyết định thiết kế Human–AI, cơ chế phân quyền (Agency Spectrum), kịch bản phỏng vấn trung tính và đánh giá thực nghiệm đều do học viên cùng nhóm Tomorrow trực tiếp định hình, kiểm chứng và chịu trách nhiệm.
 

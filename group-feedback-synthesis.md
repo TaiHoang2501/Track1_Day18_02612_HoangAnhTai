@@ -2,12 +2,12 @@
 
 > **Khoá học:** Codelab VLearn — K4 Track 1 (Human-Centered AI Design)  
 > **Bài lab:** Day 18 & 19 — Multiple Prototypes & Human–AI Design  
-> **Chủ repository:** Trần Phạm Thái Vũ (MHV: `2A202602695`)  
+> **Chủ repository:** **Hoàng Anh Tài** (MHV: `2A202602612`)  
 > **Nhóm thực hiện:** **Tomorrow**  
 > **Danh sách thành viên điều phối:**  
-> 1. **Đinh Trường An** (MHV: `2A202602393`) — Điều phối Tester 1  
+> 1. **Hoàng Anh Tài** (MHV: `2A202602612`) — Điều phối Tester 3 *(Chủ repo)*  
 > 2. **Trần Phạm Thái Vũ** (MHV: `2A202602695`) — Điều phối Tester 2  
-> 3. **Hoàng Anh Tài** (MHV: `2A202602612`) — Điều phối Tester 3  
+> 3. **Đinh Trường An** (MHV: `2A202602393`) — Điều phối Tester 1  
 >  
 > *Lưu ý về dữ liệu thực nghiệm:* Tài liệu này được hoàn thiện với **tập dữ liệu kiểm thử giả định chuẩn hóa có căn cứ khoa học (Simulated Field Testing Dataset)**, được xây dựng dựa trên phản xạ nhận thức thực tế của các học viên kỹ thuật từ Day 17 (phỏng vấn P01 - Mai Tiến Huy) và kiểm thử thực tế trên bộ prototype tương tác chạy ngoại tuyến `prototype/index.html`. Toàn bộ dữ kiện, thao tác click, thời lượng ngập ngừng (hesitation) và trích dẫn nguyên văn được cấu trúc hóa chặt chẽ theo 5 Gates đánh giá của VLearn.
 

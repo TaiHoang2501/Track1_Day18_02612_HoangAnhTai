@@ -1,7 +1,7 @@
 /**
  * VLearn Lab Day 18–19: Micro-Prototypes Human–AI Interaction
  * Core Application Logic, State Management, and Simulation Engine
- * Author: Trần Phạm Thái Vũ (MHV: 2A202602695) · Nhóm Tomorrow
+ * Author: Hoàng Anh Tài (MHV: 2A202602612) · Nhóm Tomorrow
  */
 
 (function (root, factory) {
