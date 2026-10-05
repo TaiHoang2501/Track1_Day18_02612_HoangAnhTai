@@ -86,7 +86,7 @@ Cả 3 phương án được xây dựng trên cùng **70% thành phần dùng c
 | Đường dẫn tệp | Mô tả nội dung tệp |
 |---|---|
 | [README.md](README.md) | Báo cáo tổng quan chính thức của bài lab (6 mục chuẩn VLearn). |
-| [instruction.md](instruction.md) | Tài liệu Master Instruction nguyên bản (bảo toàn 100% byte-for-byte). |
+| [VLearn Codelab Reader D18-D19](https://vlearn.dev/course/k04-l34-p2-t1/reader?day=D05&part=codelab-f3fc688af6874124b3d45f0d65a5a14e-s11-doc) | Tài liệu Master Instruction nguyên bản từ hệ thống VLearn Codelab. |
 | [three-option-design-sheet.md](three-option-design-sheet.md) | Thiết kế 3 Options, Snapshot đối chiếu Day 17, Distance Check & Bảng Human-AI Decision Table. |
 | [prototype-link.md](prototype-link.md) | Liên kết mở prototype ngoại tuyến `file://` và hướng dẫn vận hành cho tester/facilitator. |
 | [demo-interview-guide.md](demo-interview-guide.md) | Kịch bản demo 7–10' và hướng dẫn phỏng vấn/kiểm thử người dùng 15–20' sẵn sàng nói và sử dụng thực địa. |

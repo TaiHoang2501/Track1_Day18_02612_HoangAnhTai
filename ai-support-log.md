@@ -108,7 +108,7 @@ pie title "Phân Bổ Khối Lượng Đóng Góp Thực Tế Trong Bài Lab"
 | **Thiết kế 3 Spectrum of Agency (A/B/C)** | **80%** | 20% | Học viên tự phân chia tỷ lệ quyền kiểm soát; AI hỗ trợ lên danh mục tính năng chi tiết. |
 | **Lập trình mã nguồn Web Prototype (`prototype/`)** | 30% | **70%** | AI sinh mã HTML/CSS/JS theo đặc tả; học viên debug, kiểm thử giao diện và sửa các lỗi logic state. |
 | **Xây dựng kịch bản kiểm thử & The Mom Test** | **75%** | 25% | Học viên chọn lọc câu hỏi trung tính; AI hỗ trợ rà soát tránh thiên kiến dẫn dắt. |
-| **Thực hiện kiểm thử thực địa & Phỏng vấn người dùng** | **100%** | 0% | Con người trực tiếp điều phối, quan sát phản xạ thực tế của tester Ninh Quang Minh và ghi chép. |
+| **Thực hiện kiểm thử thực địa & Phỏng vấn người dùng** | **100%** | 0% | Con người trực tiếp điều phối, quan sát phản xạ thực tế của Tester 3 (học viên ẩn danh MSV: `2A202602416`) và ghi chép. |
 | **Tổng hợp Ma trận Đối đầu & Chốt Next Change** | **85%** | 15% | Học viên cùng nhóm Tomorrow họp bàn thống nhất mô hình Two-Speed Socratic Engine; AI hỗ trợ vẽ biểu đồ Mermaid. |
 
 ---
@@ -122,7 +122,7 @@ Quá trình hợp tác cùng AI trong bài lab Day 18 & 19 mang lại cho bản 
 2. **Nguy hiểm của "Ảo tưởng tự động hóa" (Automation Bias):**  
    Xu hướng tự nhiên của AI luôn là tự động hóa tối đa mọi thứ. Nhưng trong giáo dục và lập trình, tự động hóa 100% đồng nghĩa với việc tước đoạt cơ hội học tập của người học. Việc con người can thiệp để giữ lại **Option B (Socratic Co-Creation)** chính là chìa khóa tạo nên giải pháp cân bằng giữa tốc độ và hiểu biết bản chất.
 3. **Giá trị bất biến của sự tương tác con người:**  
-   Không một dòng lệnh AI nào có thể thay thế được khoảnh khắc ngồi cạnh quan sát tester Ninh Quang Minh dừng lại 30 giây soi Diff Preview và thở phào khi thấy nút Rollback. Chính những dữ liệu cảm xúc và hành vi phi ngôn ngữ đó mới là thứ định hình nên quyết định sản phẩm đúng đắn cho các vòng lặp tiếp theo.
+   Không một dòng lệnh AI nào có thể thay thế được khoảnh khắc ngồi cạnh quan sát tester (học viên ẩn danh MSV: `2A202602416`) dừng lại 8 giây soi Diff Preview, khựng lại 22 giây khi thấy AI đoán sai 45% và thở phào khi thấy nút Reject / Rollback. Chính những dữ liệu cảm xúc và hành vi phi ngôn ngữ đó mới là thứ định hình nên quyết định sản phẩm đúng đắn cho các vòng lặp tiếp theo.
 
 ---
 
