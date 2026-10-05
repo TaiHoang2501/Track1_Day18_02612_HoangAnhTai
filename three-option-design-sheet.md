@@ -82,85 +82,74 @@ Bảng đối chiếu dữ chứng thực tế từ 3 bản ghi văn bản sơ c
 
 ## PHẦN 2: THREE SOLUTION OPTIONS & COMPARISON CONTRACT (CHẶNG 2)
 
-### 2.1. 70% Thành Phần Dùng Chung (Fixed Scope Contract)
+### 2.0. Rà Soát Solution Parking Lot (Tái sử dụng kho ý tưởng Day 17)
 
-Cả 3 phương án A, B, C đều giải quyết cùng một bài toán, cho cùng một đối tượng người dùng, trong cùng một tình huống kỹ thuật chuẩn hóa:
+Nhóm rà soát lại 5 ý tưởng đã "gửi tạm" (parked) từ Day 17:
+1. *Diagnostic Refresher:* Hỏi ngắn để tìm lỗ hổng kiến thức và đưa phần giải thích phù hợp (AI-driven).
+2. *Bản đồ kiến thức tiên quyết (Prerequisite Map):* Người học tự mở phần kiến thức liên quan gắn với bài học (Non-AI / User-led).
+3. *Glossary ngay trong bài:* Tra cứu thuật ngữ chuyên môn ngay tại slide/bài code (Non-AI / In-situ).
+4. *In-situ Contextual Explainer:* Hỏi đáp AI được giới hạn chặt chẽ theo nội dung bài học/code hiện tại (User + AI Co-create).
+5. *Checkpoint Quiz:* Tự động kích hoạt khi người học dừng lâu hoặc làm sai nhiều lần (AI-initiated).
 
-* **Đối tượng người dùng (Target Learner):** Học viên các khóa học lập trình web / Cloud / AI đang tự thực hành bài tập trên máy cá nhân.
-* **Tình huống kích hoạt (Situation & Trigger):** Thực hiện bài tập chung: *"Bài tập chung Day 12: Đóng gói và Deploy Microservice Node.js lên Cloud Run"*. Sau khi chạy lệnh deploy, container bị crash và trả về lỗi trong terminal.
-* **Mục tiêu tác vụ chung (Common Task):** Người học phải xác định nguyên nhân gây lỗi, đối chiếu với tài liệu kỹ thuật chuẩn, chỉnh sửa mã nguồn tệp `server.js` và thực hiện deploy giả lập thành công.
-* **Dữ liệu giáo cụ chung (Common Data Fixture):**
-  - **Nhãn giáo cụ:** *Giáo cụ sư phạm tổng hợp (Synthesized Teaching Fixture)* — được thiết kế theo đúng bài toán chuẩn của Google Cloud Run, không phải log quan sát từ ca P01.
-  - **Thông báo lỗi Terminal:**
-    ```text
-    [INFO] Deploying container image to Cloud Run service [microservice-payment]...
-    [INFO] Container starting up...
-    [ERROR] Error: Environment variable PORT is not set or invalid. Container failed to start listening on port 8080.
-    [ERROR] Container failed to start and then terminated with exit code 1.
-    [FATAL] Cloud Run error: Container failed to start. Review container logs for details.
-    Container listening port not detected on 0.0.0.0. Health check timed out after 240 seconds.
-    ```
-  - **Mã nguồn lỗi gốc trong `server.js`:**
-    ```javascript
-    const express = require('express');
-    const app = express();
-
-    app.get('/', (req, res) => {
-      res.send('Hello from Cloud Run Microservice!');
-    });
-
-    // DEFECT: Hardcoded port 3000 and bound to localhost
-    const PORT = 3000;
-    app.listen(PORT, 'localhost', () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
-    ```
-* **Bản chất lỗi kỹ thuật & Hợp đồng Container của Cloud Run (Technical Defect):**
-  - *Lỗi 1 (Cổng lắng nghe):* Nền tảng Google Cloud Run tự động tiêm biến môi trường `PORT` (mặc định là 8080) vào container runtime. Mã nguồn hardcode `PORT = 3000` sẽ khiến container không lắng nghe đúng cổng mà Cloud Run điều hướng tới. Trích dẫn cấu hình: [Google Cloud Run Services Configuration](https://docs.cloud.google.com/run/docs/configuring/services/containers).
-  - *Lỗi 2 (Địa chỉ IP bind):* Máy chủ bind vào `localhost` (`127.0.0.1`), nghĩa là chỉ nhận kết nối nội bộ trong container. Hợp đồng container của Cloud Run yêu cầu ứng dụng phải lắng nghe trên `0.0.0.0` để bộ định tuyến ingress bên ngoài có thể gửi lưu lượng vào. Trích dẫn hợp đồng mạng: [Google Cloud Run Container Contract - Ingress & Port Listening](https://docs.cloud.google.com/run/docs/container-contract#port).
-  - *Giải thích về Dockerfile:* Một số người học nhầm tưởng chỉ cần sửa `EXPOSE 8080` hoặc thêm `ENV PORT=8080` trong Dockerfile là xong. Tuy nhiên, chỉ thị `EXPOSE` chỉ mang tính metadata tài liệu hóa; biến `ENV` trong Dockerfile chỉ có tác dụng khi test local vì khi lên Cloud Run thật, nền tảng sẽ ghi đè giá trị này. Do đó, **bắt buộc phải sửa trực tiếp mã nguồn `server.js`** để đọc `process.env.PORT || 8080` và bind `0.0.0.0`.
+> **Nguyên lý adapt từ Teardown (Day 16):**  
+> Thay vì sao chép tính năng chat nổi (floating chat widget) thông thường, nhóm kế thừa nguyên lý **"In-situ Context Binding & Progressive Agency"**: Mang công cụ hỗ trợ và trích dẫn chuẩn xác vào đúng tọa độ mà người học đang gặp lỗi, đồng thời phân bổ quyền tự trị rõ rệt từ User-led $\to$ Co-creation $\to$ Proactive AI.
 
 ---
 
-### 2.2. Định Nghĩa 3 Solution Options (Khác Biệt Về Cơ Chế & Agency)
+### 2.1. Bản Hợp Đồng So Sánh — Những Thành Tố BẮT BUỘC GIỮ NGUYÊN (70% Invariants)
 
-Lưu ý: Các tỷ lệ phần trăm phân quyền người dùng/AI dưới đây là **vị trí thiết kế minh họa trực quan (illustrative design positions)**, không phải là chỉ số đo lường thống kê thực nghiệm.
+Để đảm bảo kết quả thử nghiệm mang tính khoa học và không bị nhiễu, mọi yếu tố nền tảng bên dưới được giữ **giống hệt nhau 100%** ở cả 3 nguyên mẫu A, B, C:
+
+| Thành phần giữ nguyên | Mô tả quy định cụ thể | Quyết định thống nhất chung cho cả 3 Option (A / B / C) |
+|---|---|---|
+| **Target User<br/>(Người dùng mục tiêu)** | Cùng một đối tượng cụ thể trải nghiệm bài test, không đổi vai người dùng giữa các option. | Học viên các khóa học lập trình web / Cloud / AI đang tự thực hành bài tập kỹ thuật trên máy cá nhân. |
+| **Situation<br/>(Bối cảnh phát sinh)** | Cùng một tình huống công việc cụ thể khi vấn đề xảy ra trong thực tế. | Thực hiện bài tập thực hành: *"Bài tập chung Day 12: Đóng gói và Deploy Microservice Node.js lên Google Cloud Run"*. Sau khi chạy lệnh deploy, container bị crash và trả về thông báo lỗi trong terminal. |
+| **Task<br/>(Nhiệm vụ cần thực hiện)** | Cùng một mục tiêu công việc mà người dùng cần thao tác để giải quyết bài toán. | Xác định nguyên nhân gây lỗi trong log terminal, đối chiếu với tài liệu kỹ thuật chuẩn, chỉnh sửa mã nguồn tệp `server.js` và thực hiện deploy giả lập thành công trên prototype. |
+| **Desired Outcome<br/>(Kết quả mong đợi)** | Cùng một chuẩn đầu ra thành công mà người dùng muốn đạt được sau khi hoàn thành task. | Container vượt qua bài kiểm tra health check của Cloud Run, lắng nghe đúng cổng từ biến môi trường `PORT` và bind địa chỉ mở `0.0.0.0`; người học hiểu bản chất mà không bị đứt mạch hay tốn thời gian tra cứu chắp vá. |
+| **Content / Data Fixture<br/>(Dữ liệu thử nghiệm mẫu)** | Dùng chung một đoạn văn bản mẫu hoặc một tập dữ liệu thô để người dùng không bị phân tâm bởi nội dung khác nhau. | **Giáo cụ sư phạm tổng hợp (Synthesized Teaching Fixture):**<br/>• *Log Terminal:* Lỗi `[ERROR] Error: Environment variable PORT is not set or invalid. Container failed to start listening on port 8080. Container listening port not detected on 0.0.0.0. Health check timed out after 240 seconds.`<br/>• *Mã nguồn lỗi gốc trong `server.js`:* Hardcode `PORT = 3000;` và bind `localhost`.<br/>• *Căn cứ kỹ thuật:* [Cloud Run Container Contract](https://docs.cloud.google.com/run/docs/container-contract#port). |
+
+---
+
+### 2.2. Những Thành Tố BẮT BUỘC PHẢI KHÁC BIỆT (30% Variables across A/B/C)
 
 ```mermaid
 flowchart LR
     A["Option A: Guided Checklist & Search<br/>High User Agency (~85%)"] --- B["Option B: Co-Created Socratic Navigator<br/>Balanced Agency (~50/50)"] --- C["Option C: Proactive AI Auto-Fix<br/>High AI Automation (~80%)"]
 ```
+*(Lưu ý: Các tỷ lệ % là vị trí thiết kế minh họa trực quan trên trục phân quyền, không phải chỉ số đo lường thống kê).*
 
-#### 1. Option A: User-Initiated Guided Checklist & Grounded Search
-* **Mô tả cơ chế:** Hệ thống ở trạng thái thụ động hoàn toàn. Người học chủ động nhấn nút yêu cầu kiểm tra. Hệ thống hiển thị 3 mục kiểm tra then chốt (Checklist) kèm liên kết trích dẫn thẳng đến Official Docs của Cloud Run. Đi kèm là hộp công cụ tra cứu ngữ cảnh (Canned Contextual Search) có sẵn câu trả lời đối chiếu chuẩn cho các từ khóa kỹ thuật.
-* **Spectrum of Agency:** **User Initiates & Decides (High User Agency ~ 85%)**.
-* **Vai trò:** User tự đọc, tự tích chọn, tự gõ tìm kiếm và tự gõ mã nguồn vào editor. AI chỉ trả lời khi được hỏi một từ khóa chính xác.
-
-#### 2. Option B: Co-Created Socratic Step-by-Step Navigator
-* **Mô tả cơ chế:** Người học chủ động bấm nút "Tôi cần hướng dẫn từng bước". AI phản hồi bằng **một câu hỏi chẩn đoán ngắn** để xác định mức độ hiểu hiện tại của người học. Câu trả lời của người học sẽ kích hoạt phản hồi giải thích ngữ cảnh phù hợp (`unsure`, `env-port`, hoặc `hardcode-3000`). Sau đó, AI cùng người học triển khai **3 bước vi mô (Micro-steps)**:
-  - Bước 1: Đọc biến môi trường động `process.env.PORT || 8080`.
-  - Bước 2: Bind hostname vào địa chỉ mở `0.0.0.0`.
-  - Bước 3: Đối chiếu với Dockerfile và hiểu vì sao `EXPOSE` không thay thế được code.
-  Tại mỗi bước, người học có các nút: *Xác nhận áp dụng / Chỉnh sửa bước này / Bỏ qua (Skip - không tính hoàn thành) / Quay lại bước trước / Dừng hướng dẫn (khóa hành động, không áp dụng code) / Xem hướng giải khác (Khảo sát Dockerfile hoặc chuyển sang Option A)*.
-* **Spectrum of Agency:** **User + AI Co-Create (Balanced Agency ~ 50/50)**.
-* **Vai trò:** AI cấu trúc hóa lộ trình tư duy; người học tham gia xác nhận và kiểm soát từng mắt xích thực thi.
-
-#### 3. Option C: Proactive AI Diagnostic & Grounded Auto-Fix (User Reviews)
-* **Mô tả cơ chế:** Ngay khi tab được mở (mô phỏng sự kiện terminal nhận lỗi crash), AI chủ động phân tích error log, đưa ra kết luận chẩn đoán và hiển thị trực tiếp một bản xem trước mã nguồn khác biệt (Diff Preview: các dòng đỏ bị xóa và dòng xanh được thêm). Đi kèm là huy hiệu độ tin cậy mô phỏng (Simulated Confidence: 92%) và trích dẫn tài liệu chính thức. Người học đóng vai trò người duyệt (Reviewer) với quyền: *Chấp nhận & Áp dụng / Tùy chỉnh trước khi áp dụng / Bác bỏ (Reject - khóa đề xuất) / Khôi phục nguyên trạng (Rollback) / Báo AI đoán sai (Report Wrong - gắn cờ ghi vào bảng quan sát cục bộ) / Làm mới Option C*.
-* **Spectrum of Agency:** **AI Initiates, User Reviews (High AI Automation ~ 80%)**.
-* **Vai trò:** AI hoàn thành 90% khối lượng thao tác; người học giữ vai trò kiểm soát an toàn và ra quyết định phê duyệt cuối cùng.
+| Tiêu chí phân kỳ | Option A: Guided Checklist & Search | Option B: Co-Created Socratic Navigator | Option C: Proactive AI Auto-Fix |
+|---|---|---|---|
+| **Solution Mechanism<br/>(Cơ chế vận hành)** | **Tra cứu tĩnh & Danh mục kiểm tra (0% inference):** Người học chủ động kích hoạt danh mục 3 điểm kiểm tra kỹ thuật kèm trích dẫn tài liệu chính thức Cloud Run và hộp tra cứu ngữ cảnh mẫu (Canned Contextual Search). | **Dẫn dắt Socratic từng bước (Collaborative Dialog):** AI đặt 1 câu hỏi chẩn đoán để xác định hiểu biết, sau đó cùng người học thực hiện 3 bước vi mô (Micro-steps: PORT động $\to$ Host 0.0.0.0 $\to$ Dockerfile). | **Tự động chẩn đoán & Đề xuất bản vá (Proactive Automation):** Hệ thống tự động phân tích error log ngay khi crash, chủ động đưa ra kết luận và bản xem trước khác biệt mã nguồn (Diff Preview) kèm độ tin cậy mô phỏng 92%. |
+| **User Action<br/>(Người dùng làm gì?)** | Tự mở checklist, tự đọc, tự tích chọn, tự gõ từ khóa tra cứu và **tự gõ từng dòng mã nguồn sửa đổi** vào khung soạn thảo `server.js`. | Trả lời câu hỏi chẩn đoán, **xem trước snippet từng bước**, tùy ý chỉnh sửa snippet, bấm xác nhận nạp code, bỏ qua (skip) hoặc bấm dừng hướng dẫn. | Đóng vai trò **Người duyệt (Reviewer)**: Xem Diff Preview, quyết định phê duyệt (Apply), tùy chỉnh (Customize), bác bỏ (Reject), hoàn tác (Rollback) hoặc báo sai (Report Wrong). |
+| **AI Action<br/>(AI làm gì?)** | Không can thiệp tại runtime; chỉ hiển thị đoạn trích dẫn chuẩn khi người học gõ đúng từ khóa truy vấn. Tuyệt đối không tự sửa code hay tự deploy. | Phân tích câu trả lời chẩn đoán, cá nhân hóa lời giải thích theo ngữ cảnh, cung cấp code snippet mẫu và dẫn chứng tài liệu cho từng bước vi mô. | Tự động quét log lỗi, tạo bản vá hoàn chỉnh, sinh giao diện Diff trực quan, hiển thị huy hiệu tin cậy mô phỏng và cập nhật code khi user bấm duyệt. |
+| **Trigger<br/>(Điểm kích hoạt)** | **User-Initiated 100%:** Người học chủ động bấm nút *"🔍 Mở Checklist Kiểm Tra Lỗi Cloud Run"*. | **User-Initiated Co-creation:** Người học bấm nút *"🤝 Tôi Cần Hướng Dẫn Từng Bước"*. | **System-Initiated (Proactive):** Tự động kích hoạt ngay khi terminal nhận tín hiệu container crash. |
+| **Primary Trade-off<br/>(Sự đánh đổi chính)** | **Ưu:** Tin cậy 100%, không ảo giác, nhớ lâu do tự gõ.<br/>**Nhược:** Tốn nhiều thời gian và công sức (mất >3 phút), dễ gõ sai cú pháp, dễ gây nản lòng/bực bội. | **Ưu:** Cân bằng hoàn hảo giữa an tâm nhận thức và hỗ trợ kỹ thuật; hiểu sâu bản chất từng bước.<br/>**Nhược:** Tốn thêm 4–5 cú click chuột và mất 3–5 phút so với thao tác tự động 1-click. | **Ưu:** Tốc độ cực nhanh (10–15 giây là xong tác vụ), không tốn công gõ code hay tra cứu.<br/>**Nhược:** Bất an khi AI ảo giác; nguy cơ ỷ lại (automation bias) nếu không có cơ chế Reject/Rollback. |
 
 ---
 
-### 2.3. Bảng Distance Check (Kiểm Tra Độ Khác Biệt Giữa 3 Phương Án)
+### 2.3. Distance Check (Kiểm Tra Khoảng Cách Giải Pháp)
 
-Bảng dưới đây phân định rõ ranh giới cốt lõi:
+Để đảm bảo 3 phương án có khoảng cách thiết kế thực chất, nhóm kiểm chứng bằng 3 câu khẳng định **không sử dụng bất kỳ từ ngữ nào về màu sắc, bố cục hay câu chữ giao diện**:
 
-| Cặp so sánh | Bản chất sự khác biệt (Mechanism & Workflow) | Khác biệt về gánh nặng nhận thức (Cognitive Load) | Lối thoát khi AI đưa thông tin không chính xác |
-|---|---|---|---|
-| **A khác B vì:** | **Option A** là công cụ tra cứu tĩnh, phi hội thoại; người học phải tự xâu chuỗi thông tin để sửa mã.<br/>**Option B** là quá trình tương tác đối thoại dẫn dắt từng bước (Socratic dialogue), chia nhỏ vấn đề thành các micro-steps có hỏi - đáp. | Option A đòi hỏi nỗ lực đọc và tổng hợp cao hơn; Option B giảm tải nhận thức bằng cách phân mảnh kiến thức thành từng bước nhỏ. | Ở A, người học tự chọn lọc tài liệu; ở B, người học có thể nhấn *Bỏ qua*, *Sửa bước này*, hoặc *Dừng hướng dẫn*. |
-| **B khác C vì:** | **Option B** buộc người học phải tư duy và ra quyết định ở từng bước vi mô trước khi tiến sang bước tiếp theo.<br/>**Option C** sinh ra toàn bộ giải pháp hoàn chỉnh ngay lập tức, người học chỉ cần 1 thao tác nhấn nút duyệt hoặc bác bỏ. | Option B ưu tiên khả năng ghi nhớ và hiểu sâu quy trình; Option C tối ưu hóa tốc độ giải quyết bài tập tức thời. | Ở B, lỗi sai bị chặn ngay tại bước phát sinh; ở C, người học phải dựa vào nút *Khôi phục (Rollback)*, *Bác bỏ (Reject)* hoặc *Tùy chỉnh (Customize)* khi bản vá hoàn chỉnh bị sai. |
-| **A khác C vì:** | **Option A** do người dùng khởi xướng 100% (Passive Assistant).<br/>**Option C** do hệ thống tự động khởi phát ngay khi xuất hiện lỗi (Proactive Automation). | Option A trao toàn quyền tự do nhưng dễ gây bế tắc nếu người học không biết tìm gì; Option C chủ động loại bỏ bế tắc nhưng có nguy cơ khiến người học lười tư duy (automation bias). | Ở A, người học tự chịu trách nhiệm với mã mình gõ; ở C, hệ thống phải cung cấp cơ chế hoàn tác (Rollback) tường minh. |
+* **Option A khác Option B ở chỗ:**  
+  **Option A** là công cụ tra cứu tĩnh, đơn tuyến và phi hội thoại (0% AI suy diễn), đẩy toàn bộ gánh nặng đọc hiểu và tổng hợp mã nguồn sang người học; trong khi **Option B** là quá trình đối thoại cộng tác hai chiều, trong đó AI chủ động cấu trúc hóa kiến thức và chia nhỏ vấn đề thành 3 micro-steps có hỏi – đáp sư phạm.
+* **Option B khác Option C ở chỗ:**  
+  **Option B** bắt buộc người học phải tư duy, xem xét và ra quyết định phê duyệt ở từng bước vi mô trước khi tiến sang bước tiếp theo (Granular Progressive Disclosure); trong khi **Option C** sinh ra toàn bộ giải pháp hoàn chỉnh trong một lần xử lý duy nhất và người học chỉ ra quyết định một lần (All-at-once Approval/Rejection).
+* **Option A khác Option C ở chỗ:**  
+  **Option A** do người dùng khởi xướng và tự thực thi toàn bộ thao tác sửa đổi (Passive User-Led Assistant); trong khi **Option C** do hệ thống tự động phát hiện ngữ cảnh và tự động sinh bản vá sẵn sàng nạp vào codebase (Proactive System Automation).
+
+#### Phổ Tự Trị Người – AI (Human–AI Autonomy Spectrum) của 3 Options:
+```text
+[MỨC TỰ TRỊ THẤP — USER-LED / NO-INFERENCE]
+Option A: Người dùng chủ động mở checklist & tự gõ mã nguồn → AI chỉ đóng vai trò tra cứu tĩnh (Agency ~85%)
+                                      ↓
+[MỨC TỰ TRỊ TRUNG BÌNH — CO-CREATION / SOCRATIC NAVIGATOR]
+Option B: Người và AI cộng tác song hành: AI hỏi chẩn đoán & chia nhỏ 3 bước → Người duyệt từng micro-step (Agency ~50/50)
+                                      ↓
+[MỨC TỰ TRỊ CAO — AUTONOMOUS WITH HUMAN REVIEW]
+Option C: AI chủ động phân tích log lỗi & sinh Diff bản vá sẵn → Người dùng đóng vai trò thẩm định, phê duyệt và rollback (Agency ~80% AI)
+```
 
 ---
 
