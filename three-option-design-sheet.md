@@ -155,14 +155,105 @@ Option C: AI chủ động phân tích log lỗi & sinh Diff bản vá sẵn →
 
 ## PHẦN 3: HUMAN–AI DESIGN PASS (CHẶNG 3)
 
-Bảng quyết định 4x4 so sánh cách thức thiết kế tương tác Người–Máy giữa 3 phương án:
+Ở chặng này, nhóm tập trung rà soát điểm tương tác then chốt (**critical interaction**) được đưa vào thử nghiệm, bảo đảm quyền làm chủ của con người (Human Agency) và không thiết kế dàn trải hay đẻ thêm màn hình lý thuyết ngoài luồng.
 
-| Quyết định Thiết kế | Option A: Guided Checklist & Search (High User Agency ~85%) | Option B: Socratic Step-by-Step Navigator (Balanced ~50/50) | Option C: Proactive AI Auto-Fix (High AI Automation ~80%) |
+---
+
+### 3.1. Bốn Quyết Định Thiết Kế Cốt Lõi (The 4 Design Pillars)
+
+#### 1. Expectation (Thiết lập kỳ vọng ban đầu cho người dùng)
+* **User Mental Model (Mô hình tâm lý của người dùng):**
+  * **Option A:** Người học hiểu rõ đây là danh mục kiểm tra tĩnh (static checklist) và thanh tra cứu ngữ cảnh tại chỗ (canned in-situ search), không phải bot trò chuyện tự sửa code. Người học biết mình phải tự gõ code vào editor.
+  * **Option B:** Người học hiểu đây là một phiên trợ giảng tương tác có cấu trúc theo phương pháp Socratic gồm 1 câu hỏi chẩn đoán ban đầu và 3 bước vi mô (Micro-steps); AI đóng vai trò người gợi mở tư duy, người học sẽ duyệt từng đoạn code chứ AI không tự ý nhảy cóc.
+  * **Option C:** Người học hiểu AI là một công cụ chẩn đoán tự động phát hiện crash log và chuẩn bị sẵn một bản vá (patch) hoàn chỉnh; người học đóng vai trò Người thẩm định/Trọng tài duyệt (Reviewer/Gatekeeper) chứ không phải người tự viết lại code từ đầu.
+* **Capability & Limitations (Năng lực và giới hạn được thông báo minh bạch):**
+  * **Option A:** 
+    * *Làm tốt:* Cung cấp trích dẫn chính xác 100% từ tài liệu Google Cloud Run Container Contract cho các thuật ngữ kỹ thuật cốt lõi (`PORT`, `localhost`, `0.0.0.0`, `Dockerfile`).
+    * *Không làm được:* Không tự động phát hiện lỗi trong terminal, không tự sửa code `server.js`, không tự bấm deploy hộ.
+  * **Option B:** 
+    * *Làm tốt:* Chia nhỏ bài toán thành 3 micro-steps tuần tự (Đọc PORT động $\to$ Bind 0.0.0.0 $\to$ Kiểm tra Dockerfile); giải thích cơ chế kỹ thuật phù hợp với câu trả lời chẩn đoán; cho phép người học xem trước và tùy biến snippet trước khi nạp.
+    * *Không làm được:* Không tự ý nhảy bước khi người học chưa xác nhận; không can thiệp các file ngoài phạm vi bài học.
+  * **Option C:** 
+    * *Làm tốt:* Tự động quét terminal stacktrace, tạo bản vá hoàn chỉnh dạng Diff Preview phân biệt rõ màu xanh/đỏ, hiển thị độ tin cậy mô phỏng (92%).
+    * *Không làm được:* Tuyệt đối KHÔNG tự động nạp code vào editor khi người học chưa bấm duyệt (Apply); không đảm bảo đúng 100% trong mọi tình huống (có kịch bản AI chẩn đoán sai 45% để người học kiểm tra).
+
+---
+
+#### 2. Role and Agency (Phân vai công việc và quyền tự trị của AI)
+* **Task Division (Phân chia công việc):**
+  * **Option A (User-Led ~85%):** Người học làm 85–90% (tự mở checklist, tự đọc, tự tra cứu, tự gõ từng ký tự vào code editor). AI làm 10–15% (hiển thị trích dẫn chuẩn khi tra đúng từ khóa).
+  * **Option B (Co-Creation ~50/50):** AI phân rã cấu trúc bài toán và sinh snippet gợi ý; người học trả lời câu hỏi chẩn đoán, xem xét snippet, chỉnh sửa nếu muốn và bấm nạp từng bước.
+  * **Option C (AI Automation ~80%):** AI làm 80% (quét log, phát hiện lỗi, tạo bản vá, dựng giao diện Diff); người học làm 20% (thẩm định bản vá, bấm Apply, hoặc kích hoạt các chốt chặn phòng vệ Rollback/Reject/Customize).
+* **Quy tắc 3 mức hành động tại khoảnh khắc nhạy cảm (Triad Rule: Act / Ask / Don't Act):**
+  * **Option A:**
+    * *Act:* Hiển thị trích dẫn tài liệu ngay khi người học gõ từ khóa tìm kiếm.
+    * *Ask:* Không cần ask vì AI không can thiệp vào codebase.
+    * *Don't Act:* Tuyệt đối không tự ý sửa code trong editor hay tự bấm nút deploy.
+  * **Option B:**
+    * *Act:* Cung cấp code snippet gợi ý và giải thích kỹ thuật cho bước hiện tại.
+    * *Ask:* Hỏi câu chẩn đoán đầu vào; hỏi xác nhận của người học trước khi nạp từng đoạn snippet vào editor.
+    * *Don't Act:* Không tự động chuyển sang micro-step kế tiếp khi người học chưa xác nhận hoặc bấm Bỏ qua (Skip); dừng lại hoàn toàn khi người học bấm nút *"Dừng hướng dẫn"*.
+  * **Option C:**
+    * *Act:* Tự động kích hoạt khi có log crash, dựng sẵn panel chẩn đoán kèm Diff Preview (vì việc hiển thị bản xem trước không làm thay đổi hay gây hại cho file gốc của người học).
+    * *Ask:* Yêu cầu người học chủ động bấm nút *"Áp dụng bản vá (Apply)"* hoặc *"Tùy chỉnh (Customize)"* trước khi cho phép ghi đè lên file `server.js`.
+    * *Don't Act:* Tuyệt đối không tự động ghi đè file `server.js` hoặc tự kích hoạt deploy khi chưa có thao tác click từ người học; lập tức khóa đề xuất khi người học bấm *"Bác bỏ (Reject)"*.
+* **Cost of Failure (Cái giá khi AI mắc lỗi) & Khả năng phát hiện trực quan:**
+  * **Option A:** Nguy cơ AI ảo giác bằng 0% (tài liệu tĩnh). Rủi ro người học gõ sai cú pháp $\to$ Mắt người dễ dàng phát hiện khi bấm *"Chạy thử Deploy"* (báo lỗi cụ thể).
+  * **Option B:** Nếu AI đưa snippet chưa tối ưu $\to$ Người học nhận biết ngay vì xem trước snippet từng bước một, có thể chỉnh sửa trực tiếp (Inline Edit) hoặc bấm *"Bỏ qua (Skip)"*. Hậu quả sai sót rất nhỏ, khắc phục tại chỗ mất <1 phút.
+  * **Option C:** Nếu AI đoán sai (kịch bản 45% tin cậy: AI chỉ sửa Dockerfile mà bỏ quên `server.js`) $\to$ Giao diện Diff Preview làm lộ rõ vùng thay đổi không khớp log lỗi. Nếu lỡ bấm Apply $\to$ Hệ thống cung cấp nút *"Khôi phục (Rollback)"* và *"Báo AI đoán sai (Report Wrong)"* để quay về trạng thái gốc trong 1 cú click (zero data loss, chi phí khắc phục <10 giây).
+
+---
+
+#### 3. Evidence and Uncertainty (Minh chứng nguồn dữ liệu và độ bất định)
+* **Evidence & Traceability (Căn cứ minh chứng):**
+  * **Option A:** Từng mục checklist đều có huy hiệu link đến tài liệu chính thức [Google Cloud Run Container Contract](https://docs.cloud.google.com/run/docs/container-contract#port).
+  * **Option B:** Từng micro-step đều đính kèm trích dẫn điều khoản kỹ thuật trong Container Contract (`PORT` env var và `0.0.0.0` binding).
+  * **Option C:** Panel chẩn đoán trích xuất trực tiếp dòng thông báo lỗi trong terminal stacktrace và đối chiếu với tài liệu chính thức Cloud Run.
+* **Displaying Uncertainty (Hiển thị sự không chắc chắn):**
+  * **Option A:** Khi tra cứu từ khóa không có trong bộ dữ liệu mẫu $\to$ Hiển thị thông báo trung tính: *"Không tìm thấy tài liệu phù hợp trong bộ ngữ cảnh mẫu"*, không tự bịa đặt hay suy diễn sai.
+  * **Option B:** Lời giải thích và gợi ý thích ứng theo câu trả lời chẩn đoán (`unsure` $\to$ giải thích từ nền tảng; `env-port` $\to$ tập trung xử lý biến môi trường; `hardcode-3000` $\to$ chỉ rõ vị trí hardcode).
+  * **Option C:** Hiển thị huy hiệu độ tin cậy rõ ràng: **"Độ tin cậy mô phỏng: 92%"** (khi đúng) hoặc **"Độ tin cậy: 45% (Cảnh báo: Bản vá có thể chưa bao quát đủ các tệp)"** kèm viền đỏ cảnh báo khi kích hoạt kịch bản AI đoán sai.
+
+---
+
+#### 4. Control and Recovery (Quyền kiểm soát và cơ chế phục hồi khi AI sai)
+* **User Control Mechanisms (Công cụ kiểm soát trực quan):**
+  * **Preview (Xem trước):** Option C có khung Diff Preview phân màu xanh/đỏ rõ ràng; Option B có khung xem trước code snippet của từng bước trước khi nạp.
+  * **Edit (Chỉnh sửa tại chỗ):** Option A cho phép gõ code tự do trong editor; Option B cho phép chỉnh sửa snippet trực tiếp trước khi nạp; Option C có nút *[Tùy chỉnh (Customize)]* mở editor cho phép sửa bản vá trước khi lưu.
+  * **Reject / Dismiss (Từ chối):** Option B có nút *[Bỏ qua (Skip)]* để bỏ qua bước hiện tại mà không chèn code; Option C có nút *[Bác bỏ (Reject)]* để khóa bản vá và vô hiệu hóa nút Apply.
+  * **Stop / Cancel (Dừng khẩn cấp):** Option B có nút *[Dừng hướng dẫn]* lập tức khóa tương tác, ngăn AI can thiệp; Option C có nút *[Làm mới Option C]* để reset toàn bộ về trạng thái ban đầu.
+  * **Undo / Rollback (Hoàn tác):** Option A có nút *[Khôi phục mã nguồn ban đầu]*; Option B có nút *[Quay lại bước trước]*; Option C có nút *[Khôi phục (Rollback)]* khôi phục nguyên trạng mã nguồn `server.js` chỉ với 1 click.
+* **Graceful Fallback & Recovery (Đường thoát hiểm và phục hồi):**
+  * Khi AI đưa ra kết quả không mong muốn ở bất kỳ option nào, người học luôn có thể bỏ qua gợi ý và tự tay viết mã thủ công trên editor.
+  * Toàn bộ trạng thái giữa các Option A, B, C được phân lập hoàn toàn (State Isolation), việc thao tác hoặc rollback ở một tab không làm ảnh hưởng hay mất dữ liệu đã làm ở các tab khác.
+
+---
+
+### 3.2. Human–AI Decision Table (Ma Trận Quyết Định Thiết Kế 4x4)
+
+| Trụ cột thiết kế Human–AI | Option A: Guided Checklist & Search (High User Agency ~85%) | Option B: Socratic Step-by-Step Navigator (Balanced ~50/50) | Option C: Proactive AI Auto-Fix (High AI Automation ~80%) |
 |---|---|---|---|
-| **1. Expectation (Kỳ vọng trước hành động)** | Người học thấy rõ đây là danh mục kiểm tra gợi ý và thanh tra cứu tĩnh. Hệ thống nêu rõ: *"Chỉ cung cấp tài liệu trích dẫn ngữ cảnh, không tự động sửa mã nguồn"*. | Người học biết trước đây là một cuộc hội thoại gồm 1 câu hỏi chẩn đoán và 3 bước vi mô. AI nêu rõ: *"Tôi sẽ cùng bạn chia nhỏ quy trình, bạn sẽ duyệt từng bước"*. | Banner nổi bật thông báo rõ: *"AI đã tạo sẵn bản vá mã nguồn. Bản vá cần người dùng xem xét kỹ lưỡng trước khi áp dụng"*. |
-| **2. Role & Agency (Phân vai Người vs. AI)** | - **User Act:** Bấm mở checklist, tick chọn, gõ từ khóa tra cứu, trực tiếp sửa mã trong editor.<br/>- **AI Act:** Hiển thị trích dẫn đúng theo từ khóa truy vấn.<br/>- **Don't Act:** AI tuyệt đối không tự sửa code hay tự bấm deploy. | - **User Act:** Trả lời câu hỏi chẩn đoán, tùy biến snippet của từng bước, xác nhận hoặc bỏ qua.<br/>- **AI Ask:** Hỏi câu chẩn đoán đầu vào.<br/>- **AI Act:** Cung cấp code mẫu và giải thích kỹ thuật cho từng bước.<br/>- **Don't Act:** AI không tự ý nhảy bước khi user chưa xác nhận. | - **AI Act:** Tự động kích hoạt khi có log lỗi, sinh diff preview hoàn chỉnh.<br/>- **User Act:** Quyết định phê duyệt (Apply), chỉnh sửa lại (Customize), hoặc từ chối (Reject/Rollback).<br/>- **Don't Act:** Không tự động nạp code vào production mà không qua thao tác click của User. |
-| **3. Evidence & Uncertainty (Bằng chứng & Độ tin cậy)** | - Mỗi mục kiểm tra có huy hiệu link đến tài liệu chính thức của Google Cloud Run.<br/>- Khi tra cứu không thấy từ khóa: Hiển thị thông báo trung tính *"Không tìm thấy tài liệu phù hợp trong bộ ngữ cảnh mẫu"*, không bịa đặt nội dung. | - Từng bước vi mô đều trích dẫn điều khoản kỹ thuật trong Container Contract.<br/>- Phản hồi giải thích ngữ cảnh thay đổi tương ứng theo câu trả lời chẩn đoán (`unsure`, `env-port`, `hardcode-3000`). | - Hiển thị huy hiệu độ tin cậy: **92% (Giá trị mô phỏng giả lập)** kèm ghi chú minh bạch rằng đây không phải chỉ số đo lường thống kê thật.<br/>- **Kịch bản phục hồi sai sót (Known-wrong scenario):** Có nút kích hoạt tình huống AI chẩn đoán sai (chỉ sửa Dockerfile EXPOSE, bỏ quên server.js), độ tin cậy giảm xuống 45% kèm cảnh báo rủi ro màu đỏ. |
-| **4. Control & Recovery (Quyền kiểm soát & Lối thoát)** | - Nút **[Làm mới Checklist & Tra cứu]**: Xóa toàn bộ trạng thái đánh dấu, xóa kết quả tìm kiếm và đưa code về nguyên bản.<br/>- Người học có nút **[Khôi phục mã nguồn ban đầu]** ngay tại khung soạn thảo code. | - Nút **[Bỏ qua (Skip)]**: Không tính hoàn thành bước và không chèn code vào editor.<br/>- Nút **[Dừng hướng dẫn]**: Tạm dừng và khóa giao diện, có nút tiếp tục hoặc khởi động lại.<br/>- Nút **[Quay lại bước trước]**: Cho phép xem xét lại quyết định cũ và chỉnh sửa lại snippet.<br/>- Nút **[Xem hướng giải khác]**: Mở rộng sang khảo sát tệp Dockerfile hoặc chuyển sang Option A. | - Nút **[Tùy chỉnh (Customize)]**: Mở khung soạn thảo cho phép user sửa lại bản vá trước khi ghi đè.<br/>- Nút **[Bác bỏ (Reject)]**: Khóa bản vá, vô hiệu hóa nút Apply cho đến khi mở khóa lại.<br/>- Nút **[Khôi phục (Rollback)]**: Lập tức hoàn tác file `server.js` về đoạn code ban đầu.<br/>- Nút **[Báo AI đoán sai]**: Gắn cờ ghi chú cục bộ vào Bảng quan sát.<br/>- Nút **[Làm mới Option C]**: Đưa Option C về trạng thái nguyên bản. |
+| **1. Expectation<br/>(Kỳ vọng)** | Người học hiểu rõ đây là danh mục kiểm tra tĩnh và tra cứu tài liệu tại chỗ. Hệ thống nêu rõ: *"Chỉ cung cấp trích dẫn tài liệu, không tự động sửa mã nguồn"*. | Người học biết trước đây là một cuộc hội thoại gồm 1 câu hỏi chẩn đoán và 3 bước vi mô. AI nêu rõ: *"Tôi sẽ cùng bạn chia nhỏ quy trình, bạn sẽ duyệt từng bước"*. | Banner nổi bật thông báo rõ: *"AI đã tạo sẵn bản vá mã nguồn. Bản vá cần người dùng xem xét kỹ lưỡng trước khi áp dụng"*. |
+| **2. Role & Agency<br/>(Phân vai & Hành động)** | • **User Act:** Bấm mở checklist, tick chọn, gõ từ khóa tra cứu, trực tiếp sửa mã trong editor.<br/>• **AI Act:** Hiển thị trích dẫn đúng theo từ khóa truy vấn.<br/>• **Don't Act:** AI tuyệt đối không tự sửa code hay tự bấm deploy. | • **User Act:** Trả lời câu hỏi chẩn đoán, tùy biến snippet của từng bước, xác nhận hoặc bỏ qua.<br/>• **AI Ask:** Hỏi câu chẩn đoán đầu vào.<br/>• **AI Act:** Cung cấp code mẫu và giải thích kỹ thuật cho từng bước.<br/>• **Don't Act:** AI không tự ý nhảy bước khi user chưa xác nhận. | • **AI Act:** Tự động kích hoạt khi có log lỗi, sinh diff preview hoàn chỉnh.<br/>• **User Act:** Quyết định phê duyệt (Apply), chỉnh sửa lại (Customize), hoặc từ chối (Reject/Rollback).<br/>• **Don't Act:** Không tự động nạp code vào production mà không qua thao tác click của User. |
+| **3. Evidence<br/>(Minh chứng & Độ bất định)** | • Mỗi mục kiểm tra có huy hiệu link đến tài liệu chính thức của Google Cloud Run.<br/>• Khi tra cứu không thấy từ khóa: Hiển thị thông báo trung tính *"Không tìm thấy tài liệu phù hợp trong bộ ngữ cảnh mẫu"*, không bịa đặt nội dung. | • Từng bước vi mô đều trích dẫn điều khoản kỹ thuật trong Container Contract.<br/>• Phản hồi giải thích ngữ cảnh thay đổi tương ứng theo câu trả lời chẩn đoán (`unsure`, `env-port`, `hardcode-3000`). | • Hiển thị huy hiệu độ tin cậy: **92% (Giá trị mô phỏng giả lập)** kèm ghi chú minh bạch rằng đây không phải chỉ số đo lường thống kê thật.<br/>• **Kịch bản phục hồi sai sót (Known-wrong scenario):** Có nút kích hoạt tình huống AI chẩn đoán sai (chỉ sửa Dockerfile EXPOSE, bỏ quên server.js), độ tin cậy giảm xuống 45% kèm cảnh báo rủi ro màu đỏ. |
+| **4. Control & Recovery<br/>(Kiểm soát & Phục hồi)** | • Nút **[Làm mới Checklist & Tra cứu]**: Xóa toàn bộ trạng thái đánh dấu, xóa kết quả tìm kiếm và đưa code về nguyên bản.<br/>• Nút **[Khôi phục mã nguồn ban đầu]** ngay tại khung soạn thảo code. | • Nút **[Bỏ qua (Skip)]**: Không tính hoàn thành bước và không chèn code vào editor.<br/>• Nút **[Dừng hướng dẫn]**: Tạm dừng và khóa giao diện, có nút tiếp tục hoặc khởi động lại.<br/>• Nút **[Quay lại bước trước]**: Cho phép xem xét lại quyết định cũ và chỉnh sửa lại snippet.<br/>• Nút **[Xem hướng giải khác]**: Mở rộng sang khảo sát tệp Dockerfile hoặc chuyển sang Option A. | • Nút **[Tùy chỉnh (Customize)]**: Mở khung soạn thảo cho phép user sửa lại bản vá trước khi ghi đè.<br/>• Nút **[Bác bỏ (Reject)]**: Khóa bản vá, vô hiệu hóa nút Apply cho đến khi mở khóa lại.<br/>• Nút **[Khôi phục (Rollback)]**: Lập tức hoàn tác file `server.js` về đoạn code ban đầu.<br/>• Nút **[Báo AI đoán sai]**: Gắn cờ ghi chú cục bộ vào Bảng quan sát.<br/>• Nút **[Làm mới Option C]**: Đưa Option C về trạng thái nguyên bản. |
+
+---
+
+### 3.3. Rà Soát Dữ Liệu và Phản Hồi (Feedback & Data Check)
+* **Tác động của phản hồi người dùng:**
+  * Nút **[Báo AI đoán sai (Report Wrong)]** tại Option C ghi nhận ngay một lá cờ (flag) vào Bảng trượt quan sát cục bộ (Local Observer Drawer) phục vụ phiên kiểm thử thực địa; phản hồi này **không** tự ý âm thầm thay đổi trọng số mô hình trong phiên chạy, đảm bảo tính nhất quán của môi trường thử nghiệm giữa các tester.
+* **Quyền riêng tư dữ liệu và lưu trữ:**
+  * Toàn bộ mã nguồn và dữ liệu kiểm thử hoạt động theo cơ chế **Offline-First via `file://`**, lưu tạm thời trên `sessionStorage` của trình duyệt hoặc in-memory fallback, tuyệt đối không gửi mã nguồn hay dữ liệu cá nhân của người học ra máy chủ bên ngoài.
+  * Người học có thể nhấn nút **[Làm mới (Reset)]** ở từng option để xóa sạch mọi dấu vết phiên làm việc.
+
+---
+
+### 3.4. Đánh Giá Vượt Cổng (GATE 3: Human Control Acceptance)
+* [x] **Ranh giới rõ ràng:** Cả 3 phương án chỉ rõ ranh giới con người làm gì, AI làm gì (User Act, AI Act, Ask, Don't Act).
+* [x] **Agency tương xứng với rủi ro:** Mức tự trị cao nhất ở Option C (80%) đi kèm yêu cầu bắt buộc người học phải bấm duyệt (Apply) và cung cấp nút Rollback tức thời (0 data loss).
+* [x] **Lối thoát hiểm trực quan:** Đầy đủ các cơ chế trực quan: Preview (Diff Preview), Edit (Inline & Editor), Reject (Khóa đề xuất), Stop (Dừng hướng dẫn), Undo/Rollback (Hoàn tác 1-click), Fallback (tự gõ code thủ công).
+* [x] **Không có dấu hiệu cảnh báo (No Red Flags):** AI tuyệt đối không tự động ghi đè code trong âm thầm; người dùng luôn hiểu rõ lý do và nắm quyền làm chủ hoàn toàn.
 
 ---
 
